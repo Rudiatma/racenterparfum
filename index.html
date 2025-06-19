@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RA CENTER - Pencatatan Pelanggan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    h1 {
+      color: #333;
+    }
+    form, table, .search-box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>RA CENTER - Formulir Pelanggan</h1>
+
+  <form id="formPelanggan">
+    <label>Nama Pelanggan:</label>
+    <input type="text" id="nama" required>
+
+    <label>Alamat:</label>
+    <input type="text" id="alamat" required>
+
+    <label>Nama Parfum:</label>
+    <input type="text" id="parfum" required>
+
+    <button type="submit">Tambah Data</button>
+  </form>
+
+  <div class="search-box">
+    <label>Cari Pelanggan:</label>
+    <input type="text" id="searchInput" placeholder="Ketik nama pelanggan...">
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Pelanggan</th>
+        <th>Alamat</th>
+        <th>Nama Parfum</th>
+      </tr>
+    </thead>
+    <tbody id="tabelPelanggan"></tbody>
+  </table>
+
+  <script>
+    let data = [];
+
+    document.getElementById('formPelanggan').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('nama').value;
+      const alamat = document.getElementById('alamat').value;
+      const parfum = document.getElementById('parfum').value;
+
+      data.push({ nama, alamat, parfum });
+      updateTable();
+      this.reset();
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+      updateTable(this.value.toLowerCase());
+    });
+
+    function updateTable(searchTerm = '') {
+      const tbody = document.getElementById('tabelPelanggan');
+      tbody.innerHTML = '';
+      data.filter(item => item.nama.toLowerCase().includes(searchTerm)).forEach((item, index) => {
+        const row = `<tr>
+          <td>${index + 1}</td>
+          <td>${item.nama}</td>
+          <td>${item.alamat}</td>
+          <td>${item.parfum}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+  </script>
+</body>
+</html>
