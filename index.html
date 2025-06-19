@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -74,6 +73,7 @@
   </table>
 
   <script>
+    const scriptURL = "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_DI_SINI";
     let data = [];
 
     document.getElementById('formPelanggan').addEventListener('submit', function(e) {
@@ -82,9 +82,20 @@
       const alamat = document.getElementById('alamat').value;
       const parfum = document.getElementById('parfum').value;
 
-      data.push({ nama, alamat, parfum });
-      updateTable();
-      this.reset();
+      const payload = { nama, alamat, parfum };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => {
+        alert('Data berhasil dikirim ke Google Sheets!');
+        data.push(payload);
+        updateTable();
+        document.getElementById('formPelanggan').reset();
+      })
+      .catch(error => alert('Gagal mengirim data: ' + error.message));
     });
 
     document.getElementById('searchInput').addEventListener('input', function() {
