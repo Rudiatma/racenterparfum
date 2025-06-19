@@ -44,13 +44,13 @@
 
   <form id="formPelanggan">
     <label>Nama Pelanggan:</label>
-    <input type="text" id="nama" required>
+    <input type="text" name="nama" id="nama" required>
 
     <label>Alamat:</label>
-    <input type="text" id="alamat" required>
+    <input type="text" name="alamat" id="alamat" required>
 
     <label>Nama Parfum:</label>
-    <input type="text" id="parfum" required>
+    <input type="text" name="parfum" id="parfum" required>
 
     <button type="submit">Tambah Data</button>
   </form>
@@ -78,20 +78,20 @@
 
     document.getElementById('formPelanggan').addEventListener('submit', function(e) {
       e.preventDefault();
-      const nama = document.getElementById('nama').value;
-      const alamat = document.getElementById('alamat').value;
-      const parfum = document.getElementById('parfum').value;
-
-      const payload = { nama, alamat, parfum };
+      const form = new FormData(this);
 
       fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'application/json' }
+        body: form
       })
       .then(response => {
         if (!response.ok) throw new Error('Gagal menghubungkan ke Google Sheets');
         alert('Data berhasil dikirim ke Google Sheets!');
+        const payload = {
+          nama: form.get("nama"),
+          alamat: form.get("alamat"),
+          parfum: form.get("parfum")
+        };
         data.push(payload);
         updateTable();
         document.getElementById('formPelanggan').reset();
